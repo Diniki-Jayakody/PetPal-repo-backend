@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +47,11 @@ public class commonMethodServiceImpl implements commonMethodService {
 
     @Override
     public String addAppointment(Appointment appointment) {
-        Optional<doctorsAppoinments> doctorsAppoinments = doctorApRepo.findByDocIdAndDate(appointment.getDoctor(),appointment.getDate());
-        Optional<doctors> doctor = doctorRepository.findById(appointment.getDoctor());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        appointment.setDate(formatter.format(date));
+        Optional<doctorsAppoinments> doctorsAppoinments = doctorApRepo.findByDocIdAndDate(appointment.getDoctorId(),appointment.getDate());
+        Optional<doctors> doctor = doctorRepository.findById(appointment.getDoctorId());
         if(doctorsAppoinments.isPresent()){
             if(doctorsAppoinments.get().getAmount()>doctorsAppoinments.get().getAppointments()){
                 appointmentRepository.save(appointment);
@@ -59,9 +64,10 @@ public class commonMethodServiceImpl implements commonMethodService {
 
         if(doctor.isPresent()){
             com.PetPal.backend.Entity.doctorsAppoinments doctorsAppoinments1 = new doctorsAppoinments();
-            doctorsAppoinments1.setDocId(appointment.getDoctor());
+            doctorsAppoinments1.setDocId(appointment.getDoctorId());
             doctorsAppoinments1.setDate(appointment.getDate());
             doctorsAppoinments1.setAmount(doctor.get().getAmount());
+            doctorsAppoinments1.setAppointments(1);
             doctorApRepo.save(doctorsAppoinments1);
             appointmentRepository.save(appointment);
             return "success";
@@ -77,6 +83,10 @@ public class commonMethodServiceImpl implements commonMethodService {
 
     @Override
     public String addNotice(notices notice) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        System.out.println(formatter.format(date));
+        notice.setRequestDate(formatter.format(date));
         noticeRepository.save(notice);
         return "success";
     }

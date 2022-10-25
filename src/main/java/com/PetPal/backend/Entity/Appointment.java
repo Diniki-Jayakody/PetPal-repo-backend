@@ -20,7 +20,8 @@ public class Appointment {
     private String petName;
     private String petType;
     private String clinic;
-    private Long doctor;
+    private String doctor;
+    private Long doctorId=1L;
     private String date;
     private String time;
 
