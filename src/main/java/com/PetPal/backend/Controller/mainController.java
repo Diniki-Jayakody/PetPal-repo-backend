@@ -1,9 +1,6 @@
 package com.PetPal.backend.Controller;
 
-import com.PetPal.backend.Entity.Appointment;
-import com.PetPal.backend.Entity.Packages;
-import com.PetPal.backend.Entity.doctors;
-import com.PetPal.backend.Entity.notices;
+import com.PetPal.backend.Entity.*;
 import com.PetPal.backend.Service.commonMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +39,18 @@ public class mainController {
 
     }
 
+    @PostMapping("/addDiscussion")
+    private String addDiscussion(@RequestBody discussion discussion){
+        return commonMethodService.addDiscussion(discussion);
+
+    }
+
+    @PostMapping("/addReply")
+    private String addReply(@RequestBody discussionReply reply){
+        return commonMethodService.addReply(reply);
+
+    }
+
     @GetMapping("/getAppointments/{date}")
     private List<Appointment> getAppointment(@PathVariable String date){
         return commonMethodService.getAppointmentsToday(1L,date);
@@ -50,5 +59,10 @@ public class mainController {
     @GetMapping("/getAppointmentsOwner/{name}")
     private List<Appointment> getAppointments(@PathVariable String name) {
         return commonMethodService.getAppointmentsByOwner(name);
+    }
+
+    @GetMapping("/getDiscussions")
+    private List<discussionResBody> getDiscussions() {
+        return commonMethodService.getAllDiscussions();
     }
 }

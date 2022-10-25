@@ -34,6 +34,12 @@ public class commonMethodServiceImpl implements commonMethodService {
     @Autowired
     private doctorAppointmentRepository doctorApRepo;
 
+    @Autowired
+    private discussionRepository discussionRepository;
+
+    @Autowired
+    private discussionReplyRepository discussionReplyRepository;
+
     @Override
     public String addPackage(Packages packages) {
         packageRepository.save(packages);
@@ -106,5 +112,38 @@ public class commonMethodServiceImpl implements commonMethodService {
     @Override
     public List<Appointment> getAppointmentsByOwner(String name) {
         return appointmentRepository.findByOwnerName(name);
+    }
+
+    @Override
+    public String addDiscussion(discussion discussion) {
+        discussionRepository.save(discussion);
+        return "success";
+    }
+
+    @Override
+    public String addReply(discussionReply discussionReply) {
+        discussionReplyRepository.save(discussionReply);
+        return "success";
+    }
+
+    @Override
+    public List<discussionResBody> getAllDiscussions() {
+        List<discussion> discussions = discussionRepository.findAll();
+        List<discussionReply> discussionReplies = discussionReplyRepository.findAll();
+        List<discussionResBody> discussionResBodies = new ArrayList<>();
+        for(discussion discussion : discussions){
+            discussionResBody discussionResBody = new discussionResBody();
+            discussionResBody.setDiscussion(discussion);
+            List<discussionReply> discussionReplies1 = new ArrayList<>();
+            for(discussionReply discussionReply : discussionReplies){
+                if(discussionReply.getD_id().equals(discussion.getId())){
+                    discussionReplies1.add(discussionReply);
+
+                }
+            }
+            discussionResBody.setDiscussionReplies(discussionReplies1);
+            discussionResBodies.add(discussionResBody);
+        }
+        return discussionResBodies;
     }
 }

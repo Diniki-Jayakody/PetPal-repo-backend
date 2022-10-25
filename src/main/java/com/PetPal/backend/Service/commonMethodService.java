@@ -1,10 +1,7 @@
 package com.PetPal.backend.Service;
 
 
-import com.PetPal.backend.Entity.Appointment;
-import com.PetPal.backend.Entity.Packages;
-import com.PetPal.backend.Entity.doctors;
-import com.PetPal.backend.Entity.notices;
+import com.PetPal.backend.Entity.*;
 
 import java.util.List;
 
@@ -23,5 +20,11 @@ public interface commonMethodService {
     List<Appointment> getAppointmentsToday(Long id , String date);
 
     List<Appointment> getAppointmentsByOwner(String name);
+
+    String addDiscussion(discussion discussion);
+
+    String addReply(discussionReply discussionReply);
+
+    List<discussionResBody> getAllDiscussions();
 
 }
